@@ -1,17 +1,26 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <timeline-wrapper/>
+    <dateline/>
+
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+
+import timelineWrapper from "./components/timelineWrapper";
+import dateline from "./components/dateline";
+import axios from "axios";
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    timelineWrapper,
+    dateline,
+  }, methods: {
+    getProjectId () => {
+
+}
   }
 }
 </script>
@@ -23,6 +32,8 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  max-width: 1224px;
+  width: 100%;
 }
+
 </style>
