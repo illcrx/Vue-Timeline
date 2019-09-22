@@ -1,12 +1,14 @@
 <template>
-  <div class="timelineItemContainer">
-    <p>test</p>
-  </div>
+  <span >
+    a
+  </span>
+  
 </template>
 
 <script>
   export default {
-    name: "timelineItem",
+    name: "stageTimeline",
+    props: ['event'],
     data: () => {
       return {}
     },
@@ -21,8 +23,5 @@
 </script>
 
 <style scoped>
-  .timelineItemContainer {
-    background-color: cyan;
 
-  }
 </style>
