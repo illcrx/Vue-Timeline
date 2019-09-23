@@ -1,0 +1,141 @@
+import { adapters as eventAdapters } from "./Event";
+
+export class Stage {
+  meta = {};
+
+  name = "";
+  stageKey = "";
+  startDate = new Date(0);
+  endDate = new Date(0);
+  url = "";
+  description = "";
+
+  /**
+   * XEvent children.
+   */
+  events = [];
+
+  matchEvent(xEvent) {
+    return xEvent.isPartOfStage(this.stageKey);
+  }
+
+  addEvent(xEvent) {
+    this.events.push(xEvent);
+  }
+
+  /**
+   * @param {(child_a, child_b) => number} comparatorFunc
+   */
+  sortEvents(comparatorFunc = Stage.defaultEventComparator) {
+    this.events.sort(comparatorFunc);
+  }
+
+  static defaultEventComparator(eventA, eventB) {
+    return eventA.startDate.getTime() - eventB.startDate.getTime();
+  }
+}
+
+/**
+ * Takes an AZ BEX event object as it is from the API.
+ *
+ * Example input:
+ * ```json
+ * {
+ *  "Event_ID": 12,
+ *  "Project_Rel_ID": 15,
+ *  "Event_Name": "DP Selection",
+ *  "Start_Date": "2017-10-10T00:00:00",
+ *  "Stop_Date": null,
+ *  "Created_on": "2019-09-16T11:05:28",
+ *  "Project_Events_Schedule_Event_Rel_ID": 11,
+ *  "Project_Events_Schedule_Stop_Date_for_JSON": "\"stop\": null",
+ *  "Project_Events_Schedule_Display_in_Timeline": false,
+ *  "Project_Events_Schedule_Quarterly_Event": false,
+ *  "Project_Events_Schedule_Created_by": "Rachel Pratt (rpratt@azbex.com)",
+ *  "Project_Events_Schedule_Stage_of_Project": { "3": "Planning" },
+ *  "Schedule_Events_List_Event_ID": 11
+ * }
+ * ```
+ */
+function convertAzBexToStage(azbexEvent) {
+  let stage = new Stage();
+
+  //   event.url;
+  stage.description = azbexEvent.Event_Name;
+  stage.endDate = new Date(azbexEvent.Stop_Date);
+  stage.name = azbexEvent.Event_Name;
+  stage.stageKey = Object.keys(
+    azbexEvent.Project_Events_Schedule_Stage_of_Project
+  )[0];
+  stage.startDate = new Date(azbexEvent.Start_Date);
+  stage.meta = {
+    eventId: azbexEvent.Event_ID,
+    projectId: azbexEvent.Project_Rel_ID,
+    isQuarterly: azbexEvent.Project_Events_Schedule_Quarterly_Event,
+    shouldDisplay: azbexEvent.Project_Events_Schedule_Display_in_Timeline,
+    createdDate: new Date(azbexEvent.Created_on),
+  };
+
+  return stage;
+}
+
+export const adapters = {
+  azbex: convertAzBexToStage,
+};
+
+export const sequencer = {
+  azbex(eventList) {
+    let stages = [];
+    let events = [];
+
+    // Transform
+    // -------------------------------------------------------------------------
+
+    // All objects are events,
+    // but some are the parent event that represents the Stage.
+    // Run through the data and only pick up these parent events
+    // to be converted into Stage objects.
+    for (let event of eventList) {
+      switch (event.Event_Name.toLowerCase()) {
+        default:
+          events.push(eventAdapters.azbex(event));
+          break;
+
+        case "design":
+        case "planning":
+        case "construction":
+          stages.push(adapters.azbex(event));
+          break;
+      }
+    }
+
+    // Relational
+    // -------------------------------------------------------------------------
+
+    // Loop through each XEvent object, which can belong to multiple stages.
+    for (let ev of events) {
+      for (let s of stages) {
+        // Ask each stage if this event belongs with it.
+        if (s.matchEvent(ev)) {
+          s.addEvent(ev);
+        }
+      }
+    }
+
+    // Sorting
+    // -------------------------------------------------------------------------
+
+    // Use the stage key to implement the proper ordering of stages.
+    stages.sort((a, b) => {
+      let aKey = Number(a.stageKey);
+      let bKey = Number(b.stageKey);
+      return aKey - bKey;
+    });
+
+    for (let s of stages) {
+      s.sortEvents();
+    }
+
+    return stages;
+  },
+};
