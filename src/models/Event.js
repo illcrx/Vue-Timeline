@@ -42,8 +42,8 @@ function convertAzBexToEvent(azbexEvent) {
   event.description = azbexEvent.Event_Name;
   event.endDate = new Date(azbexEvent.Stop_Date);
   event.name = azbexEvent.Event_Name;
-  event.stages.push(
-    Object.keys(azbexEvent.Project_Events_Schedule_Stage_of_Project)
+  event.stages = Object.keys(
+    azbexEvent.Project_Events_Schedule_Stage_of_Project
   );
   event.startDate = new Date(azbexEvent.Start_Date);
   event.meta = {
