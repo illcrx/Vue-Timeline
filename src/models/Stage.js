@@ -26,6 +26,10 @@ export class Stage {
     return this.startDate.getTime() - startDate.getTime();
   }
 
+  computeWidth(){
+    return this.endDate.getTime() - this.startDate.getTime();
+  }
+
   matchEvent(xEvent) {
     return xEvent.isPartOfStage(this.stageKey);
   }

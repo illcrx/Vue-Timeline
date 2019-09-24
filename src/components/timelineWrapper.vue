@@ -6,7 +6,7 @@
         :key="stage.stageKey"
         :stage="stage"
         :project-start="projectStart"
-        class="timelineStriping"
+        class="timelineStriping verticalAlignItems"
       />
       <hr id="el_13" />
       <hr id="lowerHr" />
@@ -131,6 +131,9 @@ grid-column: 2/3;
 }
 .timelineStriping:nth-of-type(odd) {
   background: rgba(214, 214, 214, 0.87);
+}
+.verticalAlignItems {
+  align-self: center;
 }
 
 </style>

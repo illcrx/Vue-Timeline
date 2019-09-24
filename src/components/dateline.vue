@@ -84,13 +84,12 @@ li {
   box-shadow: inset 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 #yearArea {
-  margin-left: 65px;
 
   /*display: inline-grid;*/
 }
 .yearSpan {
   margin-left: 30px;
-  /*place-self: center;*/
+
 }
 li {
   float: left;
@@ -104,5 +103,19 @@ li {
   float: left;
   clear: left;
   margin-top: -10px;
+}
+ul {
+  display: flex;
+  align-items: stretch; /* Default */
+  justify-content: space-between;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+li {
+  display: block;
+  flex: 0 1 auto; /* Default */
+  list-style-type: none;
+  margin: 0 20px 0 40px;
 }
 </style>
