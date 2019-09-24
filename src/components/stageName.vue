@@ -1,20 +1,22 @@
 <template>
-  <div class="timelineItemContainer">
-    <span class="timelineItem">
-      <span class="stageName">{{stage.name}}</span>
-      <stageTimeline v-for="event in stage.events" :event="event" class="stageTimelineRange"></stageTimeline>
-    </span>
+  <div>
+    <div class="nameContainer">
+      <span class="timelineItemName">
+        <span class="stageName">{{stage.name}}</span>
+      </span>
+    </div>
+
   </div>
+
+
 </template>
 
 <script>
-import stageTimeline from "./stageTimeline";
-import { Stage } from "../models/Stage";
+import {Stage} from "../models/Stage";
 
 export default {
   name: "timelineName",
   components: {
-    stageTimeline
   },
   props: {
     stage: {
@@ -46,7 +48,7 @@ export default {
 </script>
 
 <style scoped>
-.timelineItemContainer {
+.nameContainer {
   height: 60px;
 }
 p {
@@ -57,7 +59,5 @@ p {
   padding: 0 25px;
   min-width: 178px;
 }
-.stageTimelineRange {
-  background-color: crimson;
-}
+
 </style>
