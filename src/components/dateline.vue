@@ -16,6 +16,7 @@
 <script>
 import Vue from "vue";
 import yearIcon from "../assets/Group2.svg";
+import { Stage } from "../models/Stage";
 
 export default {
   name: "dateline.vue",
@@ -32,21 +33,11 @@ export default {
 
   computed: {
     yearRange() {
-      let future = new Date();
-      future.setFullYear(future.getFullYear() + 100);
-      // Set a start time in the future so that any project will update it.
-      let start = future.getTime();
-      // Set an end time in the past so that any project will update it.
-      let end = new Date("1900-01-01T00:00:00").getTime();
-
-      for (let stage of this.stages) {
-        start = Math.min(start, stage.startDate.getTime());
-        end = Math.max(end, stage.endDate.getTime());
-      }
+      let { start, end } = Stage.computeProjectRange(this.stages);
 
       return {
-        startYear: new Date(start).getFullYear(),
-        endYear: new Date(end).getFullYear()
+        startYear: start.getFullYear(),
+        endYear: end.getFullYear()
       };
     },
 

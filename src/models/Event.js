@@ -11,6 +11,13 @@ export class XEvent {
   isPartOfStage(stage) {
     return this.stages.includes(stage);
   }
+
+  /**
+   * @param {Date} startDate
+   */
+  computeOffset(startDate) {
+    return this.startDate.getTime() - startDate.getTime();
+  }
 }
 
 /**
@@ -40,7 +47,11 @@ function convertAzBexToEvent(azbexEvent) {
 
   //   event.url;
   event.description = azbexEvent.Event_Name;
-  event.endDate = new Date(azbexEvent.Stop_Date);
+  if (azbexEvent.Stop_Date == null) {
+    event.endDate = null;
+  } else {
+    event.endDate = new Date(azbexEvent.Stop_Date);
+  }
   event.name = azbexEvent.Event_Name;
   event.stages = Object.keys(
     azbexEvent.Project_Events_Schedule_Stage_of_Project

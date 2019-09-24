@@ -15,6 +15,17 @@ export class Stage {
    */
   events = [];
 
+  get stageDelta() {
+    return this.endDate.getTime() - this.startDate.getTime();
+  }
+
+  /**
+   * @param {Date} startDate
+   */
+  computeOffset(startDate) {
+    return this.startDate.getTime() - startDate.getTime();
+  }
+
   matchEvent(xEvent) {
     return xEvent.isPartOfStage(this.stageKey);
   }
@@ -32,6 +43,30 @@ export class Stage {
 
   static defaultEventComparator(eventA, eventB) {
     return eventA.startDate.getTime() - eventB.startDate.getTime();
+  }
+
+  /**
+   * @param {Stage[]} stages
+   */
+  static computeProjectRange(stages) {
+    // Compute the earliest START date.
+    let { start } = computeDateRange(stages.map(s => s.startDate));
+    // Compute the latest END date.
+    let { end } = computeDateRange(stages.map(s => s.endDate));
+
+    return {
+      start,
+      end,
+    };
+  }
+
+  /**
+   * @param {Stage[]} stages
+   */
+  static computeProjectDelta(stages) {
+    let { end, start } = Stage.computeProjectRange(stages);
+
+    return end.getTime() - start.getTime();
   }
 }
 
@@ -139,3 +174,26 @@ export const sequencer = {
     return stages;
   },
 };
+
+/**
+ * @param {Date[]} dates
+ */
+export function computeDateRange(dates) {
+  let future = new Date();
+  future.setFullYear(future.getFullYear() + 100);
+  // Set a start time in the future so that any project will update it.
+  let start = future.getTime();
+  // Set an end time in the past so that any project will update it.
+  let end = new Date("1900-01-01T00:00:00").getTime();
+
+  for (let d of dates) {
+    let t = d.getTime();
+    start = Math.min(start, t);
+    end = Math.max(end, t);
+  }
+
+  return {
+    start: new Date(start),
+    end: new Date(end),
+  };
+}

@@ -4,6 +4,7 @@
       v-for="( stage, index ) in stages"
       :key="stage.stageKey"
       :stage="stage"
+      :project-start="projectStart"
       class="timelineNameRow"
     />
 
@@ -15,6 +16,7 @@
 <script>
 import stageName from "./stageName";
 import stageTimeline from "./stageTimeline";
+import { computeDateRange } from "../models/Stage";
 
 export default {
   name: "timelineWrapper",
@@ -32,8 +34,9 @@ export default {
   },
   methods: {},
   computed: {
-    orderPassEvent() {
-      this.passStages;
+    projectStart() {
+      let { start } = computeDateRange(this.stages.map(s => s.startDate));
+      return start;
     }
   },
   watch: {},
