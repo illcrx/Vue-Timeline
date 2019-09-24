@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    <div v-if="stages">
-      <timeline :stages="stages" />
+    <div v-if="loading">
+      <h1>Loading yo shit.</h1>
     </div>
     <div v-else>
-      <h1>Loading yo shit.</h1>
+      <timeline :stages="stages" />
     </div>
   </div>
 </template>
@@ -18,30 +18,39 @@ export default {
   name: "app",
   data: () => {
     return {
-      stages: []
+      stages: [],
+      loading: false,
+      error: null,
+      projectId: null
     };
   },
   components: {
     Timeline
   },
   methods: {
+    parseQuery() {
+      let search = window.location.search;
+      return new URLSearchParams(search);
+    },
     getProjectId() {
-      function getUrlVars() {
-        var vars = {};
-        var parts = window.location.href.replace(
-          /[?&]+([^=&]+)=([^&]*)/gi,
-          function(m, key, value) {
-            vars[key] = value;
-          }
-        );
-        return vars;
-      }
+      return this.parseQuery().get("project_id");
     }
   },
   computed: {},
   async mounted() {
-    // this.getProjectId()["project_id"];
-    this.stages = await fetchAzBexByProjectId({ projectId: 15 });
+    let projectId = this.projectId;
+    if (projectId == null) {
+      projectId = 15;
+    }
+
+    this.loading = true;
+    try {
+      this.stages = await fetchAzBexByProjectId({ projectId });
+    } catch (error) {
+      this.error = error;
+      console.error(error);
+    }
+    this.loading = false;
   }
 };
 </script>
