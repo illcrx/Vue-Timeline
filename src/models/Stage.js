@@ -2,32 +2,21 @@ import { adapters as eventAdapters } from "./Event";
 
 export class Stage {
   meta = {};
-
   name = "";
   stageKey = "";
   startDate = new Date(0);
   endDate = new Date(0);
   url = "";
   description = "";
-
   /**
    * XEvent children.
    */
   events = [];
-
-  get stageDelta() {
-    return this.endDate.getTime() - this.startDate.getTime();
-  }
-
-  /**
+   /**
    * @param {Date} startDate
    */
-  computeOffset(startDate) {
+  computeOffsetStartTime(startDate) {
     return this.startDate.getTime() - startDate.getTime();
-  }
-
-  computeWidth(){
-    return this.endDate.getTime() - this.startDate.getTime();
   }
 
   matchEvent(xEvent) {
@@ -124,6 +113,8 @@ export const adapters = {
 
 export const sequencer = {
   azbex(eventList) {
+    //Events may not have parent Events present, this will add the parent events if they are not present.
+    let sanitizedList = this.azbexStageSanitize(eventList);
     let stages = [];
     let events = [];
 
@@ -134,7 +125,7 @@ export const sequencer = {
     // but some are the parent event that represents the Stage.
     // Run through the data and only pick up these parent events
     // to be converted into Stage objects.
-    for (let event of eventList) {
+    for (let event of sanitizedList) {
       switch (event.Event_Name.toLowerCase()) {
         default:
           events.push(eventAdapters.azbex(event));
@@ -168,7 +159,7 @@ export const sequencer = {
     stages.sort((a, b) => {
       let aKey = Number(a.stageKey);
       let bKey = Number(b.stageKey);
-      return aKey - bKey;
+      return bKey - aKey;
     });
 
     for (let s of stages) {
@@ -177,6 +168,55 @@ export const sequencer = {
 
     return stages;
   },
+  azbexStageSanitize(eventList) {
+    let newList = [];
+    let hasDesign = false;
+    let hasPlanning = false;
+    let hasConstruction = false;
+
+    //Checks if there is a Stage event, if not create it.
+    console.log(eventList);
+    for(let ev of eventList) {
+      if(ev.Event_Name.toLowerCase() === 'design') {
+       hasDesign = true;
+      }
+      if(ev.Event_Name.toLowerCase() === 'planning') {
+        hasPlanning = true;
+      }
+      if(ev.Event_Name.toLowerCase() === 'construction') {
+        hasConstruction = true;
+      }
+      newList.push(ev);
+    }
+
+    if(hasDesign === false) {
+      newList.push({
+        Event_Name: 'Design',
+        Project_Events_Schedule_Stage_of_Project: {
+          2: 'Design'
+        }
+      })
+    }
+    if(hasConstruction === false) {
+      newList.push({
+        Event_Name: 'Construction',
+        Project_Events_Schedule_Stage_of_Project: {
+          1: 'Construction'
+        }
+      })
+    }
+    if(hasPlanning === false){
+      newList.push({
+        Event_Name: 'Planning',
+        Project_Events_Schedule_Stage_of_Project: {
+          3: 'Planning'
+        }
+      })
+    }
+    //return original list including Parent Stages if they do not exist.
+    console.log(newList);
+    return newList;
+  }
 };
 
 /**
