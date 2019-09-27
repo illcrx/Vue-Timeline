@@ -16,6 +16,9 @@ import { fetchAzBexByProjectId } from "./api";
 
 export default {
   name: "app",
+  components: {
+    Timeline
+  },
   data: () => {
     return {
       stages: [],
@@ -23,9 +26,6 @@ export default {
       error: null,
       projectId: null
     };
-  },
-  components: {
-    Timeline
   },
   methods: {
     parseQuery() {
@@ -38,14 +38,15 @@ export default {
   },
   computed: {},
   async mounted() {
-    let projectId = this.projectId;
-    if (projectId == null) {
-      projectId = 15;
+    let projectId = await this.getProjectId;
+    if (typeof projectId != "number" || "string"  ) {
+      projectId = '15';
     }
+    console.log(typeof projectId, projectId);
 
     this.loading = true;
     try {
-      this.stages = await fetchAzBexByProjectId({ projectId });
+      this.stages = await fetchAzBexByProjectId( { projectId } );
     } catch (error) {
       this.error = error;
       console.error(error);

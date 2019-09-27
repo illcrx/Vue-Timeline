@@ -85,7 +85,6 @@ li {
 }
 #yearArea {
 
-  /*display: inline-grid;*/
 }
 .yearSpan {
   margin-left: 30px;

@@ -17,6 +17,7 @@
               :key="stage.stageKey"
               :stage="stage"
               :project-start="projectStart"
+              :project-end="projectEnd"
               class="timelineStriping"
       ></stage-timeline>
     </div>
@@ -62,7 +63,12 @@ export default {
     projectStart() {
       let { start } = computeDateRange(this.stages.map(s => s.startDate));
       return start;
+    },
+    projectEnd() {
+      let { end } = computeDateRange(this.stages.map(s => s.endDate));
+      return end;
     }
+
   },
   watch: {},
   created() {},
@@ -77,6 +83,7 @@ export default {
   grid-template-rows: [datelineDummyRow]auto [datelineRow]45px;
   grid-template-areas: "name timeline"
   " dummy dateline";
+  min-width: 820px;
 }
 #stage-name-wrapper {
 grid-column: 1/2;

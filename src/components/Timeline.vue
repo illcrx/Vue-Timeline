@@ -1,7 +1,6 @@
 <template>
   <component :is="tag">
     <timeline-wrapper :stages="stages" />
-<!--    <dateline :stages="stages" />-->
   </component>
 </template>
 

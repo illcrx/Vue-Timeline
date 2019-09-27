@@ -33,14 +33,7 @@ export default {
   },
   methods: {},
   computed: {
-    /**
-     * Calculates the timeline offset for this stage.
-     * The timeline offset is the number of unix ms from
-     * project start to the stage start.
-     */
-    stageOffset() {
-      return this.stage.computeOffset(this.projectStart);
-    }
+
   },
   watch: {},
   created() {}
