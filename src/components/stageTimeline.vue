@@ -49,12 +49,22 @@ export default {
      *
      */
     stageStartTime(){
+      console.log("this.stage.startDate.getTime = ", this.stage.startDate.getTime());
+      console.log("this.projectStart.getTime = ", this.projectStart.getTime());
+      console.log("StageStartTime =  ", this.stage.startDate.getTime() - this.projectStart.getTime());
       return this.stage.startDate.getTime() - this.projectStart.getTime();
     },
     stageStopTime() {
+
+      console.log("this.stage.endDate.getTime = ", this.stage.endDate.getTime());
+      console.log("this.projectStart.getTime = ", this.projectStart.getTime());
+      console.log("StageStopTime = ", this.stage.endDate.getTime() - this.projectStart.getTime());
       return this.stage.endDate.getTime() - this.projectStart.getTime();
     },
     projectTime() {
+      console.log("this.projectEnd.getTime = ", this.projectEnd.getTime());
+      console.log("this.projectStart.getTime = ", this.projectStart.getTime());
+      console.log("ProjectTime = ", this.projectEnd.getTime() - this.projectStart.getTime());
       return this.projectEnd.getTime() - this.projectStart.getTime();
     },
     /**
@@ -63,14 +73,23 @@ export default {
      * project start to the stage start.
      */
     stageOffsetStartTime() {
+
+      console.log("StageOffsetStartTime = ", this.stage.computeOffsetStartTime(this.projectStart));
       return this.stage.computeOffsetStartTime(this.projectStart);
     },
     startOffsetPercentage() {
-      let percent =  Math.round(this.projectStart.getTime() / this.stageStartTime);
+      console.log("StartOffsetPercentage = ", (this.projectTime / this.stageStartTime));
+      console.log("this.projectTime = ", this.projectTime );
+      console.log("this.stageStartTime = ", this.stageStartTime);
+
+      let percent =  Math.round(this.projectTime / this.stageStartTime);
       return percent + '%';
     },
     stageWidthPercentage() {
-      let percent = Math.round(this. projectStart.getTime() / this.stageStopTime);
+      console.log("this.projectStart = ", this.projectStart.getTime());
+      console.log("this.stageStopTime = ", this.stageStopTime);
+      console.log("StageWidthPercentage = ", this. projectStart.getTime() / this.stageStopTime);
+      let percent = Math.round(this.projectStart.getTime() / this.stageStopTime);
       return percent + '%';
     },
     quarterly() {
