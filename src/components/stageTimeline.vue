@@ -49,22 +49,12 @@ export default {
      *
      */
     stageStartTime(){
-      console.log("this.stage.startDate.getTime = ", this.stage.startDate.getTime());
-      console.log("this.projectStart.getTime = ", this.projectStart.getTime());
-      console.log("StageStartTime =  ", this.stage.startDate.getTime() - this.projectStart.getTime());
       return this.stage.startDate.getTime() - this.projectStart.getTime();
     },
     stageStopTime() {
-
-      console.log("this.stage.endDate.getTime = ", this.stage.endDate.getTime());
-      console.log("this.projectStart.getTime = ", this.projectStart.getTime());
-      console.log("StageStopTime = ", this.stage.endDate.getTime() - this.projectStart.getTime());
       return this.stage.endDate.getTime() - this.projectStart.getTime();
     },
-    projectTime() {
-      console.log("this.projectEnd.getTime = ", this.projectEnd.getTime());
-      console.log("this.projectStart.getTime = ", this.projectStart.getTime());
-      console.log("ProjectTime = ", this.projectEnd.getTime() - this.projectStart.getTime());
+    projectTotalTime() {
       return this.projectEnd.getTime() - this.projectStart.getTime();
     },
     /**
@@ -74,21 +64,17 @@ export default {
      */
     stageOffsetStartTime() {
 
-      console.log("StageOffsetStartTime = ", this.stage.computeOffsetStartTime(this.projectStart));
       return this.stage.computeOffsetStartTime(this.projectStart);
     },
     startOffsetPercentage() {
-      console.log("StartOffsetPercentage = ", (this.projectTime / this.stageStartTime));
-      console.log("this.projectTime = ", this.projectTime );
-      console.log("this.stageStartTime = ", this.stageStartTime);
-
-      let percent =  Math.round(this.projectTime / this.stageStartTime);
-      return percent + '%';
+      let stageStart = this.stage.startDate.getTime();
+      let projectStart = this.projectStart.getTime();
+      let projectTotal = this.projectTotalTime;
+      let offset = (stageStart - projectStart) / projectTotal;
+      console.log(offset.toFixed(2) * 100);
+      return offset.toFixed(2) * 100 + '%';
     },
     stageWidthPercentage() {
-      console.log("this.projectStart = ", this.projectStart.getTime());
-      console.log("this.stageStopTime = ", this.stageStopTime);
-      console.log("StageWidthPercentage = ", this. projectStart.getTime() / this.stageStopTime);
       let percent = Math.round(this.projectStart.getTime() / this.stageStopTime);
       return percent + '%';
     },
@@ -110,6 +96,7 @@ export default {
 <style scoped>
   .timelineItemContainer {
     height: 60px;
+    padding-left: 40px;
   }
   .timelineItem{
     margin-left:4%;
