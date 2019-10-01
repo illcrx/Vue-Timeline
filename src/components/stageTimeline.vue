@@ -1,10 +1,22 @@
 <template>
 <!--  <span :title="stage.description">a</span>-->
   <div class="timelineItemContainer">
-      <div class="timelineItem" :style="styleObject">
+      <div v-if="stage.endDate" class="timelineItem" :style="styleObject" >
         <event-line
           v-for="event in stage.events"
           :event="event"
+          :stage="stage"
+          :projectStart="projectStart"
+          :projectEnd="projectEnd"
+        ></event-line>
+      </div>
+      <div v-else class="timelineItem" >
+        <event-line
+          v-for="event in stage.events"
+          :event="event"
+          :stage="stage"
+          :projectStart="projectStart"
+          :projectEnd="projectEnd"
         ></event-line>
       </div>
   </div>
@@ -71,12 +83,28 @@ export default {
       let projectStart = this.projectStart.getTime();
       let projectTotal = this.projectTotalTime;
       let offset = (stageStart - projectStart) / projectTotal;
+      console.log(this.stage.name);
       console.log(offset.toFixed(2) * 100);
       return offset.toFixed(2) * 100 + '%';
     },
     stageWidthPercentage() {
-      let percent = Math.round(this.projectStart.getTime() / this.stageStopTime);
-      return percent + '%';
+      let stageEnd = this.stage.endDate.getTime();
+      let projectStart = this.projectStart.getTime();
+      let projectTotal = this.projectTotalTime;
+      let startOffset = this.startOffsetPercentage;
+      let offset = (stageEnd - projectStart) / projectTotal;
+      console.log(offset.toFixed(2) * 100);
+      // console.log( stageEnd, projectStart, projectTotal, offset, Number(startOffset.slice(0, -1)));
+      if(this.stage.name.toLowerCase() === "planning"){
+        return offset.toFixed(2) * 100 + '%';
+      }
+      let width = Number(startOffset.slice(0, -1)) - offset;
+      console.log(width);
+      if(this.stage.name.toLowerCase() === 'construction') {
+        return 'auto';
+      }
+      // console.log(width);
+      return width.toFixed(2) + '%';
     },
     quarterly() {
 
