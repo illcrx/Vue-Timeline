@@ -1,7 +1,7 @@
 <template>
   <div id="dateLine">
     <div id="yearArea">
-      <ul>
+      <ul class="dateList">
         <li v-for="year in years">
           <span class="yearSpan">
             <year-icon class="yearIcon" />
@@ -89,6 +89,9 @@ li {
 .yearSpan {
   margin-left: 30px;
 
+}
+.dateList {
+  padding-top: 3px;
 }
 li {
   float: left;
