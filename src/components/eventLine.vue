@@ -1,7 +1,7 @@
 <template>
   <span
     class="eventLine"
-    :title="tooltipInformation"
+    :title="toolTipInformation"
     @mouseover="createTitleInformation(event)"
   >|
     <a href="#" :title="toolTipInformation" class="tooltip"></a>
