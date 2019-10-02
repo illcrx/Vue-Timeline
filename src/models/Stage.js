@@ -12,11 +12,15 @@ export class Stage {
    * XEvent children.
    */
   events = [];
-   /**
+  /**
    * @param {Date} startDate
    */
   computeOffsetStartTime(startDate) {
     return this.startDate.getTime() - startDate.getTime();
+  }
+
+  get stageDelta() {
+    return this.endDate.getTime() - this.startDate.getTime();
   }
 
   matchEvent(xEvent) {
@@ -176,47 +180,47 @@ export const sequencer = {
 
     //Checks if there is a Stage event, if not create it.
     console.log(eventList);
-    for(let ev of eventList) {
-      if(ev.Event_Name.toLowerCase() === 'design') {
-       hasDesign = true;
+    for (let ev of eventList) {
+      if (ev.Event_Name.toLowerCase() === "design") {
+        hasDesign = true;
       }
-      if(ev.Event_Name.toLowerCase() === 'planning') {
+      if (ev.Event_Name.toLowerCase() === "planning") {
         hasPlanning = true;
       }
-      if(ev.Event_Name.toLowerCase() === 'construction') {
+      if (ev.Event_Name.toLowerCase() === "construction") {
         hasConstruction = true;
       }
       newList.push(ev);
     }
 
-    if(hasDesign === false) {
+    if (hasDesign === false) {
       newList.push({
-        Event_Name: 'Design',
+        Event_Name: "Design",
         Project_Events_Schedule_Stage_of_Project: {
-          2: 'Design'
-        }
-      })
+          2: "Design",
+        },
+      });
     }
-    if(hasConstruction === false) {
+    if (hasConstruction === false) {
       newList.push({
-        Event_Name: 'Construction',
+        Event_Name: "Construction",
         Project_Events_Schedule_Stage_of_Project: {
-          1: 'Construction'
-        }
-      })
+          1: "Construction",
+        },
+      });
     }
-    if(hasPlanning === false){
+    if (hasPlanning === false) {
       newList.push({
-        Event_Name: 'Planning',
+        Event_Name: "Planning",
         Project_Events_Schedule_Stage_of_Project: {
-          3: 'Planning'
-        }
-      })
+          3: "Planning",
+        },
+      });
     }
     //return original list including Parent Stages if they do not exist.
     console.log(newList);
     return newList;
-  }
+  },
 };
 
 /**

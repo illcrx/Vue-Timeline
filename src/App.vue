@@ -6,18 +6,31 @@
     <div v-else>
       <timeline :stages="stages" />
     </div>
+
+    <row-bar
+      class="test"
+      v-for="stage in stages"
+      :key="stage.stageKey"
+      :height="6"
+      :stage="stage"
+      :start="start"
+      :end="end"
+    />
   </div>
 </template>
 
 <script>
 import Vue from "vue";
 import Timeline from "./components/Timeline.vue";
+import RowBar from "./components/RowBar.vue";
 import { fetchAzBexByProjectId } from "./api";
+import { Stage } from "./models/Stage";
 
 export default {
   name: "app",
   components: {
-    Timeline
+    Timeline,
+    RowBar
   },
   data: () => {
     return {
@@ -36,17 +49,27 @@ export default {
       return this.parseQuery().get("project_id");
     }
   },
-  computed: {},
+  computed: {
+    dateRange() {
+      return Stage.computeProjectRange(this.stages);
+    },
+    start() {
+      return this.dateRange.start;
+    },
+    end() {
+      return this.dateRange.end;
+    }
+  },
   async mounted() {
     let projectId = await this.getProjectId;
-    if (typeof projectId != "number" || "string"  ) {
-      projectId = '15';
+    if (typeof projectId != "number" || "string") {
+      projectId = "15";
     }
     console.log(typeof projectId, projectId);
 
     this.loading = true;
     try {
-      this.stages = await fetchAzBexByProjectId( { projectId } );
+      this.stages = await fetchAzBexByProjectId({ projectId });
     } catch (error) {
       this.error = error;
       console.error(error);
@@ -65,5 +88,10 @@ export default {
   color: #2c3e50;
   max-width: 1224px;
   width: 100%;
+}
+
+.test {
+  margin-top: 4rem;
+  background-color: hsl(208, 68%, 83%);
 }
 </style>
