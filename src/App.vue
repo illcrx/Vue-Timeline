@@ -11,7 +11,7 @@
       class="test"
       v-for="stage in stages"
       :key="stage.stageKey"
-      :height="6"
+      :height="15"
       :stage="stage"
       :start="start"
       :end="end"

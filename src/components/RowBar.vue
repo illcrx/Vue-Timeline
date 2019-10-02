@@ -1,6 +1,13 @@
 <template>
   <svg :viewBox="viewBox">
-    <rect :x="xOffset" :y="yOffset" :height="barHeight" :width="barWidth" />
+    <rect class="row:stage" :x="xOffset" :y="yOffset" :height="barHeight" :width="barWidth" />
+    <rect
+      class="row:event"
+      v-for="(event, idx) in stage.events"
+      v-bind="computeEventCoords(event, idx, stage.events.length)"
+      :key="event.meta.eventId"
+      @click="handleEventClick(event)"
+    />
   </svg>
 </template>
 
@@ -60,10 +67,10 @@ export default Vue.extend({
       return offset / this.scale;
     },
     yOffset() {
-      return this.heightPixels * 0.1;
+      return (this.heightPixels - this.barHeight) / 2;
     },
     barHeight() {
-      return this.heightPixels * 0.8;
+      return this.heightPixels * 0.75;
     },
     barWidth() {
       return this.stage.stageDelta / this.scale;
@@ -75,9 +82,37 @@ export default Vue.extend({
       return (
         rem * parseFloat(getComputedStyle(document.documentElement).fontSize)
       );
+    },
+    computeEventCoords(event, index, totalEvents) {
+      let x = event.computeOffset(this.meta.start) / this.scale;
+      let height = this.barHeight / totalEvents;
+      let y = this.yOffset + height * index;
+      let width = event.computeDelta(this.stage.endDate) / this.scale;
+      let padding = 4;
+
+      height -= padding;
+      y += padding / 2;
+
+      return {
+        x,
+        y,
+        width,
+        height
+      };
+    },
+    handleEventClick(event) {
+      console.log(event);
+      alert(`event: ${event.name}\n${event.description}`);
     }
   }
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.row\:stage {
+  fill: lightgrey;
+}
+.row\:event {
+  fill: rgba(0, 0, 0, 0.3);
+}
+</style>

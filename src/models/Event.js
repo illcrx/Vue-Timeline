@@ -18,6 +18,15 @@ export class XEvent {
   computeOffset(startDate) {
     return this.startDate.getTime() - startDate.getTime();
   }
+
+  /**
+   * @param {Date} endDateFallback
+   */
+  computeDelta(endDateFallback) {
+    return (
+      (this.endDate || endDateFallback).getTime() - this.startDate.getTime()
+    );
+  }
 }
 
 /**
