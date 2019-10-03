@@ -1,21 +1,44 @@
 <template>
-  <svg :viewBox="viewBox">
-    <rect
-      ref="popper"
-      class="row:stage"
-      :x="xOffset"
-      :y="yOffset"
-      :height="barHeight"
-      :width="barWidth"
-    />
-    <rect
-      class="row:event"
-      v-for="(event, idx) in stage.events"
-      v-bind="computeEventCoords(event, idx, stage.events.length)"
-      :key="event.meta.eventId"
-      @click="handleEventClick(event)"
-    />
-  </svg>
+<!--  <div>-->
+    <svg :viewBox="viewBox" class="inlineSVG">
+      <g>
+        <rect
+          ref="popper"
+          class="row:stage"
+          :x="xOffset"
+          :y="yOffset"
+          :height="barHeight"
+          :width="barWidth"
+          :fill="stageColor"
+
+        />
+        <rect
+          class="row:event"
+          v-for="(event, idx) in stage.events"
+          v-bind="computeEventCoords(event, idx, stage.events.length)"
+          :key="event.meta.eventId"
+          @click="handleEventClick(event)"
+        />
+      </g>
+    </svg>
+<!--    <svg>-->
+<!--      <g>-->
+<!--        <text-->
+<!--          v-for="(year, idx) in getDatelineYears"-->
+<!--          :key="idx"-->
+<!--          class="svgDatelineText"-->
+<!--          v-bind="computeDatelineCoords(getDatelineYears.length)"-->
+<!--        >-->
+<!--          {{year}}-->
+<!--        </text>-->
+
+<!--      </g>-->
+
+<!--    </svg>-->
+<!--  </div>-->
+
+
+
 </template>
 
 <script lang="ts">
@@ -31,7 +54,7 @@ export default Vue.extend({
   props: {
     height: {
       type: Number,
-      default: 4
+      default: 3
     },
     stage: {
       type: Stage,
@@ -44,7 +67,19 @@ export default Vue.extend({
     end: {
       type: Date,
       required: true
-    }
+    },
+      defaultEnd: {
+        type: String,
+        required: false
+      },
+      colorOrder: {
+        type: [Number,String],
+          required: false
+      },
+      colorArray: {
+        type: Array,
+          required: false
+      }
   },
 
   data() {
@@ -118,19 +153,28 @@ export default Vue.extend({
         height
       };
     },
-    handleEventClick(event) {
+      handleEventClick(event) {
       console.log(event);
       alert(`event: ${event.name}\n${event.description}`);
-    }
+    },
+      stageColor(){
+        let stage = this.colorOrder - 1;
+        let color = this.colorArray[stage];
+        // console.log('#' + color);
+        return ('#' + color);
+      }
   }
 });
 </script>
 
 <style scoped>
+  .inlineSVG {
+    display: block;
+  }
 .row\:stage {
-  fill: lightgrey;
+  /*fill: lightgrey;*/
 }
 .row\:event {
-  fill: rgba(0, 0, 0, 0.3);
+  /*fill: rgba(0, 0, 0, 0.3);*/
 }
 </style>

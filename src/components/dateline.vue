@@ -15,6 +15,7 @@
 
 <script>
 import Vue from "vue";
+import {  getTimeSpan } from "../models/timescale"
 import yearIcon from "../assets/Group2.svg";
 import { Stage } from "../models/Stage";
 
@@ -28,6 +29,14 @@ export default {
     stages: {
       type: Array,
       default: () => []
+    },
+    projectStart: {
+      type: Date,
+      required: true
+    },
+    projectEnd: {
+      type: Date,
+      required: true
     }
   },
 
@@ -48,24 +57,31 @@ export default {
     endYear() {
       return this.yearRange.endYear;
     },
-
-    years() {
-      let years = [];
-
-      if (Number.isNaN(this.startYear) || Number.isNaN(this.endYear)) {
-        console.error("Start and/or end years are NaN", {
-          startYear: this.startYear,
-          endYear: this.endYear
-        });
-        return years;
-      }
-
-      for (let y = this.startYear; y <= this.endYear; y++) {
-        years.push(y);
-      }
-
-      return years;
+    years(){
+      let time = getTimeSpan({
+        start: this.projectStart,
+        end: this.projectEnd
+      });
+      console.log(time);
+      return time.years;
     }
+    // years() {
+    //   let years = [];
+    //
+    //   if (Number.isNaN(this.startYear) || Number.isNaN(this.endYear)) {
+    //     console.error("Start and/or end years are NaN", {
+    //       startYear: this.startYear,
+    //       endYear: this.endYear
+    //     });
+    //     return years;
+    //   }
+    //
+    //   for (let y = this.startYear; y <= this.endYear; y++) {
+    //     years.push(y);
+    //   }
+    //
+    //   return years;
+    // }
   }
 };
 </script>

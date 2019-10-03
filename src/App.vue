@@ -7,21 +7,23 @@
       <timeline :stages="stages" />
     </div>
 
-    <row-bar
-      class="test"
-      v-for="stage in stages"
-      :key="stage.stageKey"
-      :height="15"
-      :stage="stage"
-      :start="start"
-      :end="end"
-    />
+<!--    <row-bar-->
+<!--      class="test"-->
+<!--      v-for="stage in stages"-->
+<!--      :key="stage.stageKey"-->
+<!--      :height="5"-->
+<!--      :stage="stage"-->
+<!--      :start="start"-->
+<!--      :end="end"-->
+<!--    />-->
+
   </div>
 </template>
 
 <script>
 import Vue from "vue";
 import Timeline from "./components/Timeline.vue";
+import dateline from "./components/dateline";
 import RowBar from "./components/RowBar.vue";
 import { fetchAzBexByProjectId } from "./api";
 import { Stage } from "./models/Stage";
@@ -30,6 +32,7 @@ export default {
   name: "app",
   components: {
     Timeline,
+    dateline,
     RowBar
   },
   data: () => {
@@ -88,10 +91,5 @@ export default {
   color: #2c3e50;
   max-width: 1224px;
   width: 100%;
-}
-
-.test {
-  margin-top: 4rem;
-  background-color: hsl(208, 68%, 83%);
 }
 </style>

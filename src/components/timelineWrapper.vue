@@ -12,14 +12,26 @@
       <hr id="lowerHr" />
     </div>
     <div id="stage-timeline-wrapper">
-      <stage-timeline
-              v-for="( stage, index ) in stages"
-              :key="stage.stageKey"
-              :stage="stage"
-              :project-start="projectStart"
-              :project-end="projectEnd"
-              class="timelineStriping"
-      ></stage-timeline>
+<!--      <stage-timeline-->
+<!--              v-for="( stage, index ) in stages"-->
+<!--              :key="stage.stageKey"-->
+<!--              :stage="stage"-->
+<!--              :project-start="projectStart"-->
+<!--              :project-end="projectEnd"-->
+<!--              class="timelineStriping"-->
+<!--      ></stage-timeline>-->
+      <row-bar
+        class="test timelineStriping"
+        v-for="stage in stages"
+        :key="stage.stageKey"
+        :height="6.5"
+        :stage="stage"
+        :start="start"
+        :end="end"
+        :defaultEnd="eventEnd"
+        :colorOrder="stage.stageKey"
+        :colorArray="['8d8d8d', '0F4A59', '560E3D']"
+      />
     </div>
     <div id="dummy-wrapper">
       <div class="dateLineDummy">
@@ -29,6 +41,8 @@
     <div id="dateline-wrapper">
       <dateline
         :stages="stages"
+        :projectStart="projectStart"
+        :projectEnd="projectEnd"
       ></dateline>
     </div>
 
@@ -40,7 +54,9 @@
 import stageName from "./stageName";
 import stageTimeline from "./stageTimeline";
 import dateline from "./dateline";
+import rowBar from "./RowBar";
 import { computeDateRange } from "../models/Stage";
+import { Stage } from "../models/Stage"
 
 export default {
   name: "timelineWrapper",
@@ -52,8 +68,9 @@ export default {
   },
   components: {
     stageName,
-    stageTimeline,
-    dateline
+    // stageTimeline,
+    dateline,
+    rowBar
   },
   data: () => {
     return {};
@@ -67,7 +84,17 @@ export default {
     projectEnd() {
       let { end } = computeDateRange(this.stages.map(s => s.endDate));
       return end;
+    },
+    dateRange() {
+      return Stage.computeProjectRange(this.stages);
+    },
+    start() {
+      return this.dateRange.start;
+    },
+    end() {
+      return this.dateRange.end;
     }
+
 
   },
   watch: {},
@@ -92,6 +119,8 @@ grid-column: 1/2;
 #stage-timeline-wrapper {
 grid-column: 2/3;
   grid-row: 2/3;
+  min-width: 0;
+  min-height: 0;
 }
 #stage-timeline-wrapper{
   grid-area: name;
