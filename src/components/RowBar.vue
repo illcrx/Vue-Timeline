@@ -1,6 +1,13 @@
 <template>
   <svg :viewBox="viewBox">
-    <rect class="row:stage" :x="xOffset" :y="yOffset" :height="barHeight" :width="barWidth" />
+    <rect
+      ref="popper"
+      class="row:stage"
+      :x="xOffset"
+      :y="yOffset"
+      :height="barHeight"
+      :width="barWidth"
+    />
     <rect
       class="row:event"
       v-for="(event, idx) in stage.events"
@@ -42,6 +49,17 @@ export default Vue.extend({
 
   data() {
     return {};
+  },
+
+  mounted() {
+    // let ref = this.$refs.popper;
+    // let tooltip = new Tooltip(ref, {
+    //   title: "",
+    //   trigger: "mouseover"
+    // });
+    // this.$once("hook:beforeDestroy", () => {
+    //   tooltip.destroy();
+    // });
   },
 
   computed: {
@@ -87,7 +105,7 @@ export default Vue.extend({
       let x = event.computeOffset(this.meta.start) / this.scale;
       let height = this.barHeight / totalEvents;
       let y = this.yOffset + height * index;
-      let width = event.computeDelta(this.stage.endDate) / this.scale;
+      let width = event.getTimespanWithMinimum(this.scale) / this.scale;
       let padding = 4;
 
       height -= padding;

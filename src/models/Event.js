@@ -27,6 +27,14 @@ export class XEvent {
       (this.endDate || endDateFallback).getTime() - this.startDate.getTime()
     );
   }
+
+  getTimespanWithMinimum(minimum) {
+    if (this.endDate == null) {
+      return minimum;
+    }
+
+    return Math.max(minimum, this.endDate.getTime() - this.startDate.getTime());
+  }
 }
 
 /**
