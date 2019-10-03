@@ -28,9 +28,8 @@
         :stage="stage"
         :start="start"
         :end="end"
-        :defaultEnd="eventEnd"
         :colorOrder="stage.stageKey"
-        :colorArray="['8d8d8d', '0F4A59', '560E3D']"
+        :colorArray="['rgba(86,14,61, 0.6)', 'rgba(15,74,89, 0.6)', 'rgba( 205, 205, 207 0.87)']"
       />
     </div>
     <div id="dummy-wrapper">

@@ -4,12 +4,12 @@
       <g>
         <rect
           ref="popper"
-          class="row:stage"
+          class="row:stage stageBar"
           :x="xOffset"
           :y="yOffset"
           :height="barHeight"
           :width="barWidth"
-          :fill="stageColor"
+          :style="stageColor"
 
         />
         <rect
@@ -68,10 +68,10 @@ export default Vue.extend({
       type: Date,
       required: true
     },
-      defaultEnd: {
-        type: String,
-        required: false
-      },
+      // defaultEnd: {
+      //   type: String,
+      //   required: false
+      // },
       colorOrder: {
         type: [Number,String],
           required: false
@@ -127,6 +127,13 @@ export default Vue.extend({
     },
     barWidth() {
       return this.stage.stageDelta / this.scale;
+    },
+    stageColor(){
+      let stage = this.colorOrder - 1;
+      let color = this.colorArray[stage];
+      console.log(color);
+      return {fill: color};
+
     }
   },
 
@@ -138,9 +145,9 @@ export default Vue.extend({
     },
     computeEventCoords(event, index, totalEvents) {
       let x = event.computeOffset(this.meta.start) / this.scale;
-      let height = this.barHeight / totalEvents;
-      let y = this.yOffset + height * index;
-      let width = event.getTimespanWithMinimum(this.scale) / this.scale;
+      let height = this.barHeight;
+      let y = this.yOffset;
+      let width = 2
       let padding = 4;
 
       height -= padding;
@@ -157,12 +164,7 @@ export default Vue.extend({
       console.log(event);
       alert(`event: ${event.name}\n${event.description}`);
     },
-      stageColor(){
-        let stage = this.colorOrder - 1;
-        let color = this.colorArray[stage];
-        // console.log('#' + color);
-        return ('#' + color);
-      }
+
   }
 });
 </script>
@@ -177,4 +179,7 @@ export default Vue.extend({
 .row\:event {
   /*fill: rgba(0, 0, 0, 0.3);*/
 }
+  .stageBar {
+    min-height: 60px;
+  }
 </style>
