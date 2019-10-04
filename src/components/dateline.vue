@@ -60,7 +60,7 @@ export default {
         return years;
       }
 
-      for (let y = this.startYear; y <= this.endYear; y++) {
+      for (let y = this.startYear; y <= this.endYear + 1; y++) {
         years.push(y);
       }
 
