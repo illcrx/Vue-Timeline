@@ -3,6 +3,7 @@
     <svg :viewBox="viewBox" class="inlineSVG">
       <g>
         <rect
+          v-if="stage.endDate"
           ref="popper"
           class="row:stage stageBar"
           :x="xOffset"
@@ -68,10 +69,10 @@ export default Vue.extend({
       type: Date,
       required: true
     },
-      // defaultEnd: {
-      //   type: String,
-      //   required: false
-      // },
+      defaultEnd: {
+        type: String,
+        required: false
+      },
       colorOrder: {
         type: [Number,String],
           required: false
@@ -105,13 +106,14 @@ export default Vue.extend({
       });
     },
     heightPixels() {
-      return this.convertRemToPixels(this.height);
+      return this.height;
+      // return this.convertRemToPixels(this.height);
     },
     scale() {
       return time.day;
     },
     viewBox() {
-      let w = this.meta.timespan / this.scale;
+      let w = this.meta.timespan / this.scale || 1200;
       let h = this.heightPixels;
       return `0 0 ${w} ${h}`;
     },
@@ -131,8 +133,7 @@ export default Vue.extend({
     stageColor(){
       let stage = this.colorOrder - 1;
       let color = this.colorArray[stage];
-      console.log(color);
-      return {fill: color};
+      return {backgroundColor: '#' + color};
 
     }
   },

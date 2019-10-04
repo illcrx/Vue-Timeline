@@ -66,7 +66,7 @@ export default {
   async mounted() {
     let projectId = await this.getProjectId;
     if (typeof projectId != "number" || "string") {
-      projectId = "15";
+      projectId = "18";
     }
     console.log(typeof projectId, projectId);
 

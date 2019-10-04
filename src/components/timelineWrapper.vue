@@ -24,12 +24,12 @@
         class="test timelineStriping"
         v-for="stage in stages"
         :key="stage.stageKey"
-        :height="6.5"
+        :height="60"
         :stage="stage"
         :start="start"
         :end="end"
         :colorOrder="stage.stageKey"
-        :colorArray="['rgba(86,14,61, 0.6)', 'rgba(15,74,89, 0.6)', 'rgba( 205, 205, 207 0.87)']"
+        :colorArray="['rgba(86,14,61, 0.6)', 'rgba(15,74,89, 0.6)', 'rgba( 205, 205, 207, 0.87)']"
       />
     </div>
     <div id="dummy-wrapper">

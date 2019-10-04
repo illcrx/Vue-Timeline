@@ -131,9 +131,8 @@ ul {
   padding: 0;
 }
 li {
-  display: block;
   flex: 0 1 auto; /* Default */
   list-style-type: none;
-  margin: 0 20px 0 40px;
+  margin: 0 0 0 10px;
 }
 </style>
