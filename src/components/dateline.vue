@@ -18,6 +18,7 @@ import Vue from "vue";
 import {  getTimeSpan } from "../models/timescale"
 import yearIcon from "../assets/Group2.svg";
 import { Stage } from "../models/Stage";
+import { XEvent } from "../models/Event";
 
 export default {
   name: "dateline.vue",
@@ -36,18 +37,43 @@ export default {
     },
     projectEnd: {
       type: Date,
-      required: true
+      required: false
     }
   },
 
   computed: {
     yearRange() {
-      let { start, end } = Stage.computeProjectRange(this.stages);
+      if(projectEnd){
+        let { start, end } = Stage.computeProjectRange(this.stages);
+        console.log("ProjectEnd" + projectEnd);
+        return {
+          startYear: start.getFullYear(),
+          endYear: end.getFullYear()
+        };
+      }
+
+      let{ start, end } = XEvent.computeProjectRange(this.stages);
+
+      if(end) {
+        console.log("end" + end);
+        return {
+          startYear: start.getFullYear(),
+          endYear: end.getFullYear()
+        };
+      }
+      console.log("endYear" + start.getFullYear() +1);
 
       return {
         startYear: start.getFullYear(),
-        endYear: end.getFullYear()
-      };
+        endYear: start.getFullYear() + 1
+      }
+
+
+
+
+
+
+
     },
 
     startYear() {
@@ -62,8 +88,7 @@ export default {
         start: this.projectStart,
         end: this.projectEnd
       });
-      console.log(time);
-      return time.years;
+        return time.years;
     }
     // years() {
     //   let years = [];
