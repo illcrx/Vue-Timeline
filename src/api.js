@@ -6,5 +6,9 @@ export function fetchAzBexByProjectId({ projectId }) {
     .post(
       `https://hook.integromat.com/tl6w7i72tkgxf1t2gsvy2md96wucrtol?project_id=${projectId}`
     )
-    .then(({data}) => sequencer.azbex(data));
+    .then(({data}) => {
+      let stages = sequencer.azbex(data);
+      let projectDates = sequencer.projectRange(data);
+      return {stages, projectDates};
+    });
 }

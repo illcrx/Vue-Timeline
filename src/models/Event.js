@@ -38,33 +38,6 @@ export class XEvent {
     return Math.max(minimum, this.endDate.getTime() - this.startDate.getTime());
   }
 
-  /**
-   *
-   * @param stage is the entire project
-   * @returns {{start: *, end: *}}
-   */
-  computeProjectRange(stages) {
-    let endRange = [];
-    let startRange = [];
-    for(let stage in stages){
-      // Compute the earliest START date.
-       startRange.push(computeDateRange(stage.events.map(s => s.startDate)));
-      // Compute the latest END date.
-       endRange.push(computeDateRange(stage.events.map(s => s.endDate)));
-    }
-
-    let start = computeDateRange(startRange);
-    if(endRange.length > 0){
-      let end = computeDateRange(endRange);
-    } else {
-      let end = null;
-    }
-
-    return {
-      start,
-      end,
-    };
-  }
 }
 
 /**

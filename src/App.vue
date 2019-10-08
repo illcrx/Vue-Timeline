@@ -4,7 +4,11 @@
       <h1>Loading yo shit.</h1>
     </div>
     <div v-else>
-      <timeline :stages="stages" />
+      <timeline
+        :stages="stages"
+        :projectStart="projectStart"
+        :projectEnd="projectEnd"
+      />
     </div>
 
 <!--    <row-bar-->
@@ -40,7 +44,9 @@ export default {
       stages: [],
       loading: false,
       error: null,
-      projectId: null
+      projectId: null,
+      projectStart: null,
+      projectEnd: null
     };
   },
   methods: {
@@ -72,7 +78,10 @@ export default {
 
     this.loading = true;
     try {
-      this.stages = await fetchAzBexByProjectId({ projectId });
+      let { stages, projectDates } = await fetchAzBexByProjectId({ projectId });
+      this.stages = stages;
+      this.projectEnd = projectDates.projectEnd;
+      this.projectStart = projectDates.projectStart;
     } catch (error) {
       this.error = error;
       console.error(error);
