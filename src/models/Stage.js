@@ -179,7 +179,6 @@ export const sequencer = {
     let hasConstruction = false;
 
     //Checks if there is a Stage event, if not create it.
-    console.log(eventList);
     for (let ev of eventList) {
       if (ev.Event_Name.toLowerCase() === "design") {
         hasDesign = true;
@@ -218,15 +217,14 @@ export const sequencer = {
       });
     }
     //return original list including Parent Stages if they do not exist.
-    console.log(newList);
     return newList;
   },
   projectRange(eventList){
     console.log(eventList);
-    let projectStart = computeDateRange(eventList.map(e => e.Start_Date));
-    let projectEnd = computeDateRange(eventList.map(e => e.End_Date));
+    let {start} = computeDateRange(eventList.map(e => e.Start_Date));
+    let {end} = computeDateRange(eventList.map(e => e.Stop_Date));
 
-    return { projectStart, projectEnd };
+    return { start, end };
   }
 };
 
@@ -234,7 +232,6 @@ export const sequencer = {
  * @param {Date[]} dates
  */
 export function computeDateRange(dates) {
-  console.log(dates);
   let future = new Date();
   future.setFullYear(future.getFullYear() + 100);
   // Set a start time in the future so that any project will update it.
@@ -243,7 +240,6 @@ export function computeDateRange(dates) {
   let end = new Date("1900-01-01T00:00:00").getTime();
 
   for (let d of dates) {
-    console.log(d);
     let dT = new Date(d);
     let t = dT.getTime();
     start = Math.min(start, t);

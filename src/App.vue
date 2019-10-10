@@ -5,6 +5,7 @@
     </div>
     <div v-else>
       <timeline
+        v-if="projectStart"
         :stages="stages"
         :projectStart="projectStart"
         :projectEnd="projectEnd"
@@ -74,16 +75,13 @@ export default {
     if (typeof projectId != "number" || "string") {
       projectId = "15";
     }
-    console.log(typeof projectId, projectId);
 
     this.loading = true;
     try {
       let { stages, projectDates } = await fetchAzBexByProjectId({ projectId });
-      console.log(stages);
-      console.log(projectId);
       this.stages = stages;
-      this.projectEnd = projectDates.projectEnd;
-      this.projectStart = projectDates.projectStart;
+      this.projectEnd = projectDates.end;
+      this.projectStart = projectDates.start;
     } catch (error) {
       this.error = error;
       console.error(error);

@@ -18,15 +18,23 @@ export default Vue.extend({
   },
 
   props: {
-    tag: {
+      tag: {
       type: String,
       default: "div",
       required: false
     },
-    stages: {
+      stages: {
       type: Array,
       required: true
-    }
+    },
+      projectStart: {
+          type: Date,
+          required: true
+      },
+      projectEnd: {
+          type: Date,
+          required: true
+      }
   }
 });
 </script>
