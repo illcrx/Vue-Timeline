@@ -11,7 +11,6 @@
           :height="barHeight"
           :width="barWidth"
           :style="stageColor"
-
         />
         <rect
           class="row:event"
@@ -133,7 +132,8 @@ export default Vue.extend({
     stageColor(){
       let stage = this.colorOrder - 1;
       let color = this.colorArray[stage];
-      return {backgroundColor: '#' + color};
+      console.log(stage,color);
+      return {fill: color};
 
     }
   },
