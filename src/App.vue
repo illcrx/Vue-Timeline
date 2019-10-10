@@ -72,13 +72,15 @@ export default {
   async mounted() {
     let projectId = await this.getProjectId;
     if (typeof projectId != "number" || "string") {
-      projectId = "18";
+      projectId = "15";
     }
     console.log(typeof projectId, projectId);
 
     this.loading = true;
     try {
       let { stages, projectDates } = await fetchAzBexByProjectId({ projectId });
+      console.log(stages);
+      console.log(projectId);
       this.stages = stages;
       this.projectEnd = projectDates.projectEnd;
       this.projectStart = projectDates.projectStart;
@@ -86,6 +88,7 @@ export default {
       this.error = error;
       console.error(error);
     }
+
     this.loading = false;
   }
 };

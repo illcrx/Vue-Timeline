@@ -244,7 +244,8 @@ export function computeDateRange(dates) {
 
   for (let d of dates) {
     console.log(d);
-    let t = d.getTime();
+    let dT = new Date(d);
+    let t = dT.getTime();
     start = Math.min(start, t);
     end = Math.max(end, t);
   }
